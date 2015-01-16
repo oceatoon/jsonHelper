@@ -5,48 +5,48 @@ var jsonHelper = {
    */
   a : {x : {b : 2} },
   test : function(){
-    console.log("init",JSON.stringify(jh.a));
+    console.log("init",JSON.stringify(this.a));
 
-    jh.getValueByPath( jh.a,"x.b");
-    console.log("jh.a set x.b => 1000");    
-    jh.setValueByPath( jh.a,"x.b",1000);
-    jh.getValueByPath( jh.a,"x.b")
-    console.log(JSON.stringify(jh.a));
+    this.getValueByPath( this.a,"x.b");
+    console.log("this.a set x.b => 1000");    
+    this.setValueByPath( this.a,"x.b",1000);
+    this.getValueByPath( this.a,"x.b")
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a.x set b => 2000");
-    jh.setValueByPath( jh.a.x,"b",2000);
-    jh.getValueByPath( jh.a,"x.b");
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a.x set b => 2000");
+    this.setValueByPath( this.a.x,"b",2000);
+    this.getValueByPath( this.a,"x.b");
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a.x set b => {m:1000}");
-    jh.setValueByPath( jh.a.x,"b",{m:1000});
-    jh.getValueByPath( jh.a,"x.b");
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a.x set b => {m:1000}");
+    this.setValueByPath( this.a.x,"b",{m:1000});
+    this.getValueByPath( this.a,"x.b");
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a set x.b.a => 4000");
-    jh.setValueByPath( jh.a,"x.b.a",4000);
-    jh.getValueByPath( jh.a,"x.b");
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a set x.b.a => 4000");
+    this.setValueByPath( this.a,"x.b.a",4000);
+    this.getValueByPath( this.a,"x.b");
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a set x.b.a => {m:1000}");
-    jh.getValueByPath( jh.a,"x.b.a");
-    jh.setValueByPath( jh.a,"x.b.a",{m:1000});
-    jh.getValueByPath( jh.a,"x.b.a");
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a set x.b.a => {m:1000}");
+    this.getValueByPath( this.a,"x.b.a");
+    this.setValueByPath( this.a,"x.b.a",{m:1000});
+    this.getValueByPath( this.a,"x.b.a");
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a set x.b.a.b.c.d => {xx:1000}");
-    jh.getValueByPath( jh.a,"x.b.a.b.c.d");
-    jh.setValueByPath( jh.a,"x.b.a.b.c.d",{xx:1000,yy:25000});
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a set x.b.a.b.c.d => {xx:1000}");
+    this.getValueByPath( this.a,"x.b.a.b.c.d");
+    this.setValueByPath( this.a,"x.b.a.b.c.d",{xx:1000,yy:25000});
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a reset x.b.a.b.c.d.yy => 100000");
-    jh.getValueByPath( jh.a,"x.b.a.b.c.d.yy");
-    jh.setValueByPath( jh.a,"x.b.a.b.c.d.yy",100000);
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a reset x.b.a.b.c.d.yy => 100000");
+    this.getValueByPath( this.a,"x.b.a.b.c.d.yy");
+    this.setValueByPath( this.a,"x.b.a.b.c.d.yy",100000);
+    console.log(JSON.stringify(this.a));
 
-    console.log("jh.a delete x.b.a.b.c.d.yy");
-    jh.deleteByPath( jh.a,"x.b.a.b.c.d.yy");
-    console.log(JSON.stringify(jh.a));
+    console.log("this.a delete x.b.a.b.c.d.yy");
+    this.deleteByPath( this.a,"x.b.a.b.c.d.yy");
+    console.log(JSON.stringify(this.a));
   },
   /*
   srcObj = any json OBJCT
