@@ -134,6 +134,18 @@ var jsonHelper = {
     });
     //console.dir(destArray);
     return destArray;
-  }
+  },
+  /*
+  Detect a difference in content between 2 Objects
+  */
+  compareJSON : function(obj1, obj2) { 
+  var ret = {}; 
+  for(var i in obj2) { 
+    if(!obj1.hasOwnProperty(i) || obj2[i] !== obj1[i]) { 
+      ret[i] = obj2[i]; 
+    } 
+  } 
+  return ret; 
+}
 
 };
