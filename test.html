@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <script src="jquery.js"></script>
+    <script type="text/javascript">
+      var data;
+      var jsonFromToJson = {
+
+        "fromJson" : [
+        ],
+        "rules" : { 
+                "assignedTo": "assignedTo",
+                "author": "author",
+                "createdDate": "createdDate",
+                "description": "description",
+                "endDate": "endDate",
+                "name": "name",
+                "parentId": "parentId",
+                "parentType": "parentType",
+                "percent": "percent",
+                "perimeterId": "perimeterId",
+                "duration" : function(obj){
+                                var duration;
+                                var dateBegin = new Date(obj["startDate"]).getTime()/86400000;
+                                var dateEnding = new Date(obj["endDate"]).getTime()/86400000;
+                                duration = new Number(dateEnding-dateBegin).toFixed(0);
+                                if(duration+"" == "NaN"){
+                                  duration = "100";
+                                }
+                                return duration;
+                              },
+                "priority": function(obj){
+                    var size;
+                    switch(obj["priority"]){
+                      case (''):
+                      size = 10;
+                      break;
+                      case ('high'):
+                      size= 60;
+                      break;
+                      case ('low'):
+                      size= 110;
+                      break;
+                      case ('urgent'):
+                      size= 160;
+                      break;
+                      case ('normal'):
+                      size= 210;
+                      break;
+                    };
+                    return size;
+                    },
+                "startDate": "startDate",
+                "status": function(obj){
+                  var size;
+                  switch(obj["status"]){
+                      case (''):
+                        size = 10;
+                      break;
+                      case ('verify'):
+                        size= 60;
+                      break;
+                      case ('scheduled'):
+                        size = 110;
+                      break;
+                      case ('validate'):
+                        size = 160;
+                      break;
+                      case ('inProgress'):
+                        size = 210;
+                      break;
+                      case ('beingSpecified'):
+                        size = 260;
+                      break
+                      case('evaluate'):
+                       size = 310;
+                      break
+                      };
+                      return size;
+                    }
+                },
+        "toJson" : [],
+        
+        "test" : function(){
+          this.convertObject(); 
+        },
+        
+        "convertArray" : function(){
+          //console.log("from",this.fromJson);
+
+          var toJson = [];
+          var rules = this.rules;
+          //console.log("rules",rules);
+          $(this.fromJson).each(function(i, fromObj){
+
+            newLine = {};
+            //console.log("convert new Line before",newLine, "i", i);   
+            $.each(rules, function(keyTo, convertTo){
+              //console.log("convert rules ",fromObj,keyTo,convertTo);     
+                if(typeof convertTo == "function")
+                  newLine[ keyTo ] = convertTo( fromObj );
+                else
+                  newLine[ keyTo ] = fromObj[convertTo];
+            });
+            console.log("converted line data ",newLine);   
+            toJson.push(newLine);
+          });
+          //console.log("to",toJson); 
+          this.toJson = toJson;
+        },
+
+
+        "convertObject" : function(){
+          //console.log("from",this.fromJson);
+
+          var toJson = {};
+          var rules = this.rules;
+          console.log("rules",rules);
+          $.each(this.fromJson,function(key, fromObj){
+
+            newLine = {};
+            //console.log("convert new Line before key", key);   
+            $.each(rules, function(keyTo, convertTo){
+              //console.log("convert rules ",fromObj,key,convertTo);     
+                if(typeof convertTo == "function")
+                  newLine[ keyTo ] = convertTo( fromObj );
+                else
+                  newLine[ keyTo ] = fromObj[convertTo];
+            });
+            //console.log("converted line data ",newLine);
+            if(!toJson[key])
+                toJson[key] = {};
+            toJson[key] = newLine;
+          });
+          console.log("to",toJson); 
+          this.toJson = toJson;
+        },
+
+
+        "getTo" : function(){    
+          return this.toJson;
+        },
+
+      }
+      jQuery(document).ready(function() {
+        $.getJSON("tasks.json", function(jsonData){
+          data = jsonData;
+          console.log(data);
+        jsonFromToJson["fromJson"] = data;
+        });
+      });
+
+
+    </script>
+</body>
