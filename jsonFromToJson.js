@@ -8,26 +8,36 @@ var jsonFromToJson = {
         {"x":2, "y": {"c" : 60, "o" : 50} }
     ],
     "rules" : 
-    { 
-    "a" : "x" , 
-    "b" : function(obj){ return obj.y.c + obj.y.o }
-    },
+      { 
+      "a" : "x" , 
+      "b" : function(obj){ return obj.y.c + obj.y.o }
+      },
       "outputLine" : {"a":"", "b":""},
       "toJson" : [],
       
       "test" : function()
       {
-        jsonFromToJson.convertArray( jsonFromToJson.fromJson ); 
+        jsonFromToJson.convertArray(  ); 
       },
-      
-      "convertArray" : function(list)
+      "testObj" : function()
       {
-        console.log("convertArray",list);
+        jsonFromToJson.fromjson = {
+          "xxx" : {"x":1, "y": {"c" : 20, "o" : 30} },
+          "yyy" : {"x":2, "y": {"c" : 60, "o" : 50} }
+        };
+        jsonFromToJson.convertObject(  ); 
+      },
 
+      //fromList is an array
+      //a list of identical entries in an array 
+      "convertArray" : function()
+      {
+        fromList = jsonFromToJson.fromjson;
         var toJson = [];
         var rules = jsonFromToJson.rules;
+        console.log("convertArray",fromList,rules);
         console.log("rules",rules);
-        $.each(list , function(i, fromObj)
+        $.each(fromList , function(i, fromObj)
         {
           newLine = {};
           console.log("convert new Line before",newLine, "i", i);   
@@ -46,14 +56,14 @@ var jsonFromToJson = {
         jsonFromToJson.toJson = toJson;
       },
 
-
-      "convertObject" : function(list)
+      //fromObj is a json object with key : and ideantical (conplex) values
+      "convertObject" : function()
       {
-        console.log("convertObject",list);
+        fromObj = jsonFromToJson.fromjson;
         var toJson = {};
         var rules = jsonFromToJson.rules;
-        console.log("rules",rules);
-        $.each(list,function(key, fromObj)
+        console.log("convertObject",fromObj,rules);
+        $.each(fromObj,function(key, fromObj)
         {
 
           newLine = {};
