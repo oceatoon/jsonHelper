@@ -3,8 +3,8 @@ var jsonHelper = {
   /*
   
    */
-  a : {x : {b : 2} },
-  johnson : { r :{ z: 2, e: 5, i: 8} a:{ m: 8, h:3}},
+  "a" : {x : {b : 2} },
+  "johnson" : { r :{ z: 2, e: 5, i: 8} a:{ m: 8, h:3}},
 
   test : function(){
     console.log("init",JSON.stringify(this.a));

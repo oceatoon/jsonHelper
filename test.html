@@ -3,8 +3,21 @@
   <head>
   </head>
   <body>
+    <textarea class="jsonFrom"></textarea>
+    <div class="jsonTo"></div>
     <script src="jquery.js"></script>
     <script type="text/javascript">
+    jQuery(document).ready(function() {
+        $.getJSON("tasks.json", function(jsonData){
+          data = jsonData;
+          console.log(data);
+          jsonFromToJson["fromJson"] = data;
+          jsonFromToJson.convertObject();
+          $(".jsonTo").html(JSON.stringify(jsonFromToJson.toJson));
+      
+        });
+      });
+
       var data;
       var jsonFromToJson = {
 
@@ -144,13 +157,7 @@
         },
 
       }
-      jQuery(document).ready(function() {
-        $.getJSON("tasks.json", function(jsonData){
-          data = jsonData;
-          console.log(data);
-        jsonFromToJson["fromJson"] = data;
-        });
-      });
+      
 
 
     </script>
