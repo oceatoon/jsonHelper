@@ -24,18 +24,25 @@
         <textarea id="rules">
 { 
 "a" : "x" , 
-"b" : "x"
+  "b" : "obj.y.c + obj.y.o",
+  "c" : "obj.y.c *2",
+  "d" : "obj.y.c /2"
 }
         </textarea>
 
         <div class="buttons">
             <button id="convert">Convert</button>
         </div>
+        
+        <h2>Output: JSON</h2>
+        <textarea id="rawjson" style="width: 100%; height: 20em;"></textarea>
 
         <h2>Output: HTML</h2>
 
         <div id="output">
         </div>
+
+        
 
         <h2>Raw HTML</h2>
         <textarea id="output-raw" style="width: 100%; height: 20em;">
@@ -54,6 +61,6 @@
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/mode/javascript/javascript.min.js" data-main="js/demo"></script>
-        <script src="json.human.js/lib/require.js" data-main="json.human.js/js/demo"></script>
+        <script src="json.human.js/lib/require.js" data-main="json.human.js/js/demo"></script> 
     </body>
 </html>

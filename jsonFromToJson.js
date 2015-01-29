@@ -43,13 +43,13 @@ var jsonFromToJson = {
           console.log("convert new Line before",newLine, "i", i);   
           $.each(rules, function(keyTo, convertTo)
           {
-            console.log("convert rules ",fromObj,keyTo,convertTo);     
+            //console.log("convert rules ",fromObj,keyTo,convertTo);     
               if(typeof convertTo == "function")
                 newLine[ keyTo ] = convertTo( fromObj );
               else
-                newLine[ keyTo ] = fromObj[convertTo];
+                newLine[ keyTo ] = jsonHelper.getValueByPath( fromObj,convertTo);
           });
-          console.log("converted line data ",newLine);   
+          //console.log("converted line data ",newLine);   
           toJson.push(newLine);
         }); 
         console.dir(toJson); 
@@ -70,13 +70,13 @@ var jsonFromToJson = {
           //console.log("convert new Line before key", key);   
           $.each(rules, function(keyTo, convertTo)
           {
-            console.log("convert rules ",fromObj,key,convertTo);     
+            //console.log("convert rules ",fromObj,key,convertTo);     
               if(typeof convertTo == "function")
                 newLine[ keyTo ] = convertTo( fromObj );
               else
-                newLine[ keyTo ] = fromObj[convertTo];
+                newLine[ keyTo ] = jsonHelper.getValueByPath( fromObj,convertTo);
           });
-          console.log("converted line data ",newLine);
+          //console.log("converted line data ",newLine);
           if(!toJson[key])
               toJson[key] = {};
           toJson[key] = newLine;
@@ -91,3 +91,106 @@ var jsonFromToJson = {
       },
 
     }
+
+//just copied as a tool
+var jsonHelper = {
+  /*
+  srcObj = any json OBJCT
+  path =  STRING "node1.node2.node3"
+   */
+  getValueByPath : function(srcObj,path)
+  {
+    node = srcObj;
+    if( !path )
+      return node;
+    else if( path.indexOf(".") ){
+      pathArray = path.split(".");
+      $.each(pathArray,function(i,v){
+        if(node != undefined && node[v] != undefined)
+          node = node[v];
+        else {
+          node = undefined; 
+          return;
+        }
+      });
+      return node;
+    }  
+    else
+      return node[path];
+  },
+  setValueByPath : function(srcObj,path,value)
+  {
+    node = srcObj;
+    if( !path ){
+      node = value;
+    }
+    else if( path.indexOf(".") ){
+      pathArray = path.split(".");
+      nodeParent = null;
+      lastKey = null;
+      $.each(pathArray,function(i,v){
+        if(!node[v]){
+          console.log("building node",v);
+          node[v] = {};
+        }
+        nodeParent = node;
+        node = node[v]; 
+        lastKey = v;
+      });
+      //console.log(node,nodeParent,lastKey);
+      nodeParent[lastKey] = value;
+    }  
+    else{ 
+      node[path] = value;
+    }
+  },
+  
+  deleteByPath : function  (srcObj,path) {
+    nodeParent = srcObj;
+    lastChild = null;
+    node = srcObj;
+    if( path.indexOf(".") ){
+      pathArray = path.split(".");
+      if( pathArray.length )
+      {
+        $.each(pathArray,function(i,v){
+          nodeParent = node;
+          lastChild = v;
+          node = node[v];
+        });
+      }
+      delete nodeParent[lastChild];
+    } else
+      delete nodeParent[path];
+  },
+  /*
+  convert
+  { "clim":75,"informatique": 223 }
+  to 
+  [{  "label" : "Climatisation",  "value":75},{"label" : "Climatisation", "value":75}]
+   */
+  Object2GraphArray : function ( srcObj )
+  {
+    destArray = [];
+    //console.dir(srcObj);
+    $.each(srcObj,function(k,v){
+      destArray.push(v);
+    });
+    //console.dir(destArray);
+    return destArray;
+  },
+  /*
+  Detect a difference in content between 2 Objects
+  */
+  compareJSON : function(obj1, obj2) { 
+  var ret = {}; 
+  for(var i in obj2) { 
+    if(!obj1.hasOwnProperty(i) || obj2[i] !== obj1[i]) { 
+      ret[i] = obj2[i]; 
+    } 
+  } 
+  return ret; 
+}
+
+};
+
