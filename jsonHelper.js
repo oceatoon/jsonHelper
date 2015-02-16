@@ -48,6 +48,8 @@ var jsonHelper = {
     console.log("this.a delete x.b.a.b.c.d.yy");
     this.deleteByPath( this.a,"x.b.a.b.c.d.yy");
     console.log(JSON.stringify(this.a));
+
+    console.log(JSON.stringify( this.endPoints( this.a ) ));
   },
   /*
   srcObj = any json OBJCT
@@ -145,6 +147,15 @@ var jsonHelper = {
     } 
   } 
   return ret; 
-}
+  },
+  /*
+  returns all endpoints inside a json map 
+  input 
+  {"x":1, "y": {"c" : 20, "o" : 30} }
+  output
+  ["x", "y", "y.c", "y.o" ]
+  */
+  endPoints : function(){
 
+  }
 };
