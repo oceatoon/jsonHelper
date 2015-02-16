@@ -23,10 +23,10 @@ require(["../src/json.human"], function (JsonHuman) {
 
     function convert(input, output) {
         rawjson.innerHTML = JSON.stringify(jsonFromToJson.toJson);
-        /*rawjsoneditor = CodeMirror.fromTextArea(rawjson, {
+        var rawjsoneditor = CodeMirror.fromTextArea(rawjson, {
             mode: "application/json",
             json: true
-        });*/
+        });
         var node = JsonHuman.format(rawjson);
         output.innerHTML = "";
         output.appendChild(node);
@@ -41,15 +41,15 @@ require(["../src/json.human"], function (JsonHuman) {
             json = JSON.parse( editor.getValue() );
             rulesJson = JSON.parse( ruleseditor.getValue() , function (key, value) 
             {
-                console.log("build rule test ",value);
+                console.log("build rule : ",value);
                 if (value && ( typeof value === 'string' ) && value.indexOf("obj") >= 0) 
                 {
                     // we can only pass a function as string in JSON ==> doing a real function
                     //var jsFunc = new Function('return ' + value)();
-                    var jsFunc = null;
-                    eval("jsFunc = function(obj){return "+value+"}");
-                    console.log("build rule function","var jsFunc = function(obj){return "+value+"}",jsFunc);
-                    return jsFunc;
+                    
+                    eval("var "+key+" = null;"+key+" = function(obj){return "+value+"}");
+                    console.log("build rule function","var "+key+" = function(obj){return "+value+"}",key);
+                    return key;
                 }                      
                 return value;
             });
