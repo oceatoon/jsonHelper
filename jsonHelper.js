@@ -1,10 +1,8 @@
-
 var jsonHelper = {
   /*
   
    */
-  "a" : {x : {b : 2} },
-
+  a : {x : {b : 2} },
   test : function(){
     console.log("init",JSON.stringify(this.a));
 
@@ -48,8 +46,6 @@ var jsonHelper = {
     console.log("this.a delete x.b.a.b.c.d.yy");
     this.deleteByPath( this.a,"x.b.a.b.c.d.yy");
     console.log(JSON.stringify(this.a));
-
-    console.log(JSON.stringify( this.endPoints( this.a ) ));
   },
   /*
   srcObj = any json OBJCT
@@ -58,9 +54,15 @@ var jsonHelper = {
   getValueByPath : function(srcObj,path)
   {
     node = srcObj;
+    console.log("path",path);
     if( !path )
       return node;
-    else if( path.indexOf(".") ){
+    else if( typeof path == "object" && path.value )
+    {
+      return path.value;
+    }
+    else if( path.indexOf(".") )
+    {
       pathArray = path.split(".");
       $.each(pathArray,function(i,v){
         if(node != undefined && node[v] != undefined)
@@ -72,8 +74,10 @@ var jsonHelper = {
       });
       return node;
     }  
-    else
+    else if(node[path])
       return node[path];
+    else
+      return "";
   },
   setValueByPath : function(srcObj,path,value)
   {
@@ -81,13 +85,14 @@ var jsonHelper = {
     if( !path ){
       node = value;
     }
-    else if( path.indexOf(".") ){
+    else if( path.indexOf(".") )
+    {
       pathArray = path.split(".");
       nodeParent = null;
       lastKey = null;
       $.each(pathArray,function(i,v){
         if(!node[v]){
-          console.log("building node",v);
+          //console.log("building node",v);
           node[v] = {};
         }
         nodeParent = node;
@@ -97,9 +102,8 @@ var jsonHelper = {
       //console.log(node,nodeParent,lastKey);
       nodeParent[lastKey] = value;
     }  
-    else{ 
+    else
       node[path] = value;
-    }
   },
   
   deleteByPath : function  (srcObj,path) {
@@ -131,31 +135,50 @@ var jsonHelper = {
     destArray = [];
     //console.dir(srcObj);
     $.each(srcObj,function(k,v){
-      destArray.push(v);
+        if(v.value != 0)
+            destArray.push(v);
     });
     //console.dir(destArray);
     return destArray;
   },
-  /*
-  Detect a difference in content between 2 Objects
-  */
-  compareJSON : function(obj1, obj2) { 
-  var ret = {}; 
-  for(var i in obj2) { 
-    if(!obj1.hasOwnProperty(i) || obj2[i] !== obj1[i]) { 
-      ret[i] = obj2[i]; 
-    } 
-  } 
-  return ret; 
-  },
-  /*
-  returns all endpoints inside a json map 
-  input 
-  {"x":1, "y": {"c" : 20, "o" : 30} }
-  output
-  ["x", "y", "y.c", "y.o" ]
-  */
-  endPoints : function(){
 
+  jsonFromToJson : {
+
+  "fromjson" : [
+    {"x":1, "y": {"c" : 20, "o" : 30} },
+    {"x":2, "y": {"c" : 60, "o" : 50} }
+  ],
+  "rules" : { 
+          "a" : "x" , 
+          "b" : function(obj){ return obj.y.c + obj.y.o }
+          },
+  "outputLine" : {"a":"", "b":""},
+  "toJson" : [],
+  
+  "test" : function(){
+    console.log("test");  
+    this.convert();
+  },
+  
+  "convert" : function(){
+    console.log("convert");     
+    this.toJson = [];
+    $.each(this.fromJson,function(i, fromObj){
+
+      newLine = this.outputLine;
+      /*$.each(this.rules,function(keyTo, convertTo){
+        console.log("convert rules ",fromObj,keyTo,convertTo);     
+          if(typeof convertTo == "function")
+            newLine[ keyTo ] = convertTo( fromObj );
+          else
+            newLine[ keyTo ] = fromObj[convertTo];
+      });*/
+        
+      this.toJson.push(newLine);
+    });
+    return this.toJson;
   }
+
+}
+
 };
