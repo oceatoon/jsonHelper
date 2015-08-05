@@ -44,10 +44,17 @@ var jsonFromToJson = {
           $.each(rules, function(keyTo, convertTo)
           {
             //console.log("convert rules ",fromObj,keyTo,convertTo);     
-              if(typeof convertTo == "function")
-                newLine[ keyTo ] = convertTo( fromObj );
-              else
-                newLine[ keyTo ] = jsonHelper.getValueByPath( fromObj,convertTo);
+            if(typeof convertTo == "function"){
+                  if(keyTo.indexOf(".") >= 0 )
+                      jsonHelper.setValueByPath( newLine, keyTo, convertTo( fromObj ) );
+                  else
+                      newLine[ keyTo ] = convertTo( fromObj );
+            } else {
+                  if(keyTo.indexOf(".") >= 0 )
+                      jsonHelper.setValueByPath( newLine, keyTo, jsonHelper.getValueByPath( fromObj,convertTo) );
+                  else
+                      newLine[ keyTo ] = jsonHelper.getValueByPath( fromObj,convertTo);
+            }
           });
           //console.log("converted line data ",newLine);   
           toJson.push(newLine);
@@ -71,10 +78,17 @@ var jsonFromToJson = {
           $.each(rules, function(keyTo, convertTo)
           {
             //console.log("convert rules ",fromObj,key,convertTo);     
-              if(typeof convertTo == "function")
-                newLine[ keyTo ] = convertTo( fromObj );
-              else
-                newLine[ keyTo ] = jsonHelper.getValueByPath( fromObj,convertTo);
+            if(typeof convertTo == "function"){
+                  if(keyTo.indexOf(".") >= 0 )
+                      jsonHelper.setValueByPath( newLine, keyTo, convertTo( fromObj ) );
+                  else
+                      newLine[ keyTo ] = convertTo( fromObj );
+            } else {
+                  if(keyTo.indexOf(".") >= 0 )
+                      jsonHelper.setValueByPath( newLine, keyTo, jsonHelper.getValueByPath( fromObj,convertTo) );
+                  else
+                      newLine[ keyTo ] = jsonHelper.getValueByPath( fromObj,convertTo);
+            }
           });
           //console.log("converted line data ",newLine);
           if(!toJson[key])
